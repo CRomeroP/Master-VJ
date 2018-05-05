@@ -45,6 +45,7 @@ public :
 	int max_damage;
 	int min_protection;
 	int max_protection;
+	int gold;
 	Creature* combat_target;
 	Item* weapon;
 	Item* armour;

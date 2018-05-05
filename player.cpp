@@ -311,6 +311,11 @@ bool Player::Loot(const vector<string>& args)
 	}
 	else
 		cout << "\nYou loot " << target->name << "'s corpse, but find nothing there.\n";
+	if (target->gold > 0)
+	{
+		gold = gold + target->gold;
+		target->gold = 0;
+	}
 
 	return true;
 }

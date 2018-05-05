@@ -40,6 +40,7 @@ World::World()
 	bat->hit_points = 5;
 	bat->min_damage = 1;
 	bat->max_damage = 2;
+	bat->gold = 3;
 
 	entities.push_back(butler);
 	entities.push_back(bat);
