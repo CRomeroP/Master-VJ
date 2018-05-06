@@ -314,6 +314,7 @@ bool Player::Loot(const vector<string>& args)
 	if (target->gold > 0)
 	{
 		gold = gold + target->gold;
+		cout << "\nYou earn " << target->gold << " gold.\n";
 		target->gold = 0;
 	}
 
@@ -408,7 +409,7 @@ bool Player::Use(const vector<string>& args)
 
 	if (item == NULL)
 	{
-		cout << "\nItem not found at your inventory\n";
+		cout << "\nItem not found at your inventory.\n";
 		return false;
 	}
 
@@ -417,7 +418,7 @@ bool Player::Use(const vector<string>& args)
 		case HEAL:
 		if (hit_points == 25)
 		{
-			cout << "\nYou have max hit points! Cant use this item\n";
+			cout << "\nYou have max hit points! Cant use this item.\n";
 			return false;
 		}
 		else
@@ -427,9 +428,10 @@ bool Player::Use(const vector<string>& args)
 
 			item->ChangeParentTo(NULL);
 			
-			cout << "\nHit_points healed from " << actual_hp << " to " << hit_points << "\n";
+			cout << "\nHit_points healed from " << actual_hp << " to " << hit_points << ".\n";
 			break;
 		}
 	}
-	cout << "\nYou consume item " << item->name << "\n";
+	cout << "\nYou consume item " << item->name << ".\n";
+	return true;
 }

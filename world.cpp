@@ -15,23 +15,38 @@ World::World()
 
 	// Rooms ----
 	Room* forest = new Room("Forest", "You are surrounded by tall trees. It feels like a huge forest someone could get lost easily.");
-	Room* house = new Room("House", "You are inside a beautiful but small white house.");
-	Room* basement = new Room("Basement", "The basement features old furniture and dim light.");
+	Room* centrance = new Room("Castle entrance", "You are inside a beautiful but small white house.");
+	Room* chall = new Room("Basement", "The basement features old furniture and dim light.");
 	Room* cave = new Room("Cave", "You are inside a dark cave");
+	Room* lwing = new Room("Castle left wing", "left");
+	Room* rwing = new Room("Castle right wing", "right");
+	Room* throne = new Room("Throne room", "Throne");
 
-	Exit* ex1 = new Exit("west", "east", "Little path", house, forest);
-	Exit* ex2 = new Exit("down", "up", "Stairs", house, basement);
-	Exit* ex3 = new Exit("north", "south", "Cave entrance", forest, cave);
-	ex2->locked = true;
+	Exit* ex1 = new Exit("north", "south", "Little path", centrance, forest, true);
+	Exit* ex2 = new Exit("east", "north", "Passage", forest, cave);
+	Exit* ex3 = new Exit("west", "east", "Cave entrance", cave, centrance);
+	Exit* ex4 = new Exit("south", "north", "Castle bridge", centrance, chall);
+	Exit* ex5 = new Exit("west", "east", "wooden door", chall, lwing);
+	Exit* ex6 = new Exit("east", "west", "wooden door", chall, rwing);
+	Exit* ex7 = new Exit("south", "north", "Double doors", chall, throne);
+	ex4->locked = true;
+	ex5->locked = true;
 
 	entities.push_back(forest);
-	entities.push_back(house);
-	entities.push_back(basement);
+	entities.push_back(centrance);
+	entities.push_back(chall);
 	entities.push_back(cave);
+	entities.push_back(lwing);
+	entities.push_back(rwing);
+	entities.push_back(throne);
 
 	entities.push_back(ex1);
 	entities.push_back(ex2);
 	entities.push_back(ex3);
+	entities.push_back(ex4);
+	entities.push_back(ex5);
+	entities.push_back(ex6);
+	entities.push_back(ex7);
 
 	// Creatures ----
 	Creature* butler = new Creature("Butler", "It's James, the house Butler.", house);
