@@ -9,7 +9,7 @@ Item::Item(const char* title, const char* description, Entity* parent, ItemType 
 Entity(title, description, parent), item_type(item_type)
 {
 	type = ITEM;
-	min_value = max_value = 0;
+	min_value = max_value = cost = 0;
 }
 
 // ----------------------------------------------------

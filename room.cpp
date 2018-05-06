@@ -4,6 +4,7 @@
 #include "item.h"
 #include "creature.h"
 #include "room.h"
+#include "NPC.h"
 
 // ----------------------------------------------------
 Room::Room(const char* title, const char* description) :
@@ -52,6 +53,11 @@ void Room::Look() const
 			cout << "\nThere is someone else here: " << cr->name;
 			if(cr->IsAlive() == false)
 				cout << " (dead)";
+		}
+		else if ((*it)->type == NPC)
+		{
+			Npc* npc = (Npc*)*it;
+			cout << "\nA friendly NPC is here: " << npc->name;
 		}
 	}
 

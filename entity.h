@@ -13,7 +13,8 @@ enum EntityType
 	EXIT,
 	ITEM,
 	CREATURE,
-	PLAYER
+	PLAYER,
+	NPC
 };
 
 class Entity
@@ -35,6 +36,7 @@ public :
 	EntityType type;
 	std::string name;
 	std::string description;
+	int cost;
 
 	Entity* parent;
 	list<Entity*> container;

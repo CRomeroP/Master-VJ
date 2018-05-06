@@ -7,6 +7,7 @@
 #include "room.h"
 #include "player.h"
 #include "world.h"
+#include "NPC.h"
 
 // ----------------------------------------------------
 World::World()
@@ -49,20 +50,25 @@ World::World()
 	entities.push_back(ex7);
 
 	// Creatures ----
-	Creature* butler = new Creature("Butler", "It's James, the house Butler.", house);
-	butler->hit_points = 10;
+	//Creature* butler = new Creature("Butler", "It's James, the house Butler.", house);
+	//butler->hit_points = 10;
 	Creature* bat = new Creature("Bat", "An annoying bat", cave);
 	bat->hit_points = 5;
 	bat->min_damage = 1;
 	bat->max_damage = 2;
 	bat->gold = 3;
 
-	entities.push_back(butler);
+	//entities.push_back(butler);
 	entities.push_back(bat);
 
+	//NPCs
+	Npc* merchant = new Npc("Merchant", "A wandering merchant in search of fortune", MERCHANT, centrance, "Do you wanna buy something?");
+	entities.push_back(merchant);
+
+
 	// Items -----
-	Item* mailbox = new Item("Mailbox", "Looks like it might contain something.", house);
-	Item* key = new Item("Key", "Old iron key.", mailbox);
+	//Item* mailbox = new Item("Mailbox", "Looks like it might contain something.", house);
+	Item* key = new Item("Key", "Old iron key.", merchant);
 	ex2->key = key;
 
 	Item* sword = new Item("Sword", "A simple old and rusty sword.", forest, WEAPON);
@@ -70,24 +76,25 @@ World::World()
 	sword->max_value = 6;
 
 	Item* sword2(sword);
-	sword2->parent = butler;
+	//sword2->parent = butler;
 
-	Item* shield = new Item("Shield", "An old wooden shield.", butler, ARMOUR);
-	shield->min_value = 1;
-	shield->max_value = 3;
-	butler->AutoEquip();
+	//Item* shield = new Item("Shield", "An old wooden shield.", butler, ARMOUR);
+	//shield->min_value = 1;
+	//shield->max_value = 3;
+	//butler->AutoEquip();
 
 	Item* shpotion = new Item("Small_heal_potion", "Potion that heals 2 hit points", bat, HEAL);
 	shpotion->max_value = 2;
 	shpotion->parent = bat;
 
-	entities.push_back(mailbox);
+	//entities.push_back(mailbox);
 	entities.push_back(sword);
-	entities.push_back(shield);
+	//entities.push_back(shield);
+	entities.push_back(key);
 	entities.push_back(shpotion);
 
 	// Player ----
-	player = new Player("Hero", "You are an awesome adventurer!", forest);
+	player = new Player("Hero", "You are an awesome adventurer!", centrance);
 	player->hit_points = 25;
 	entities.push_back(player);
 }
@@ -224,6 +231,10 @@ bool World::ParseCommand(vector<string>& args)
 			else if (Same(args[0], "use") || Same(args[0], "u"))
 			{
 				player->Use(args);
+			}
+			else if (Same(args[0], "talk") || Same(args[0], "t"))
+			{
+				player->talk(args);
 			}
 			else
 				ret = false;

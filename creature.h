@@ -49,6 +49,7 @@ public :
 	Creature* combat_target;
 	Item* weapon;
 	Item* armour;
+	std::string dialog;
 };
 
 #endif //__Creature__

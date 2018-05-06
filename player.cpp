@@ -4,6 +4,7 @@
 #include "room.h"
 #include "exit.h"
 #include "item.h"
+#include "NPC.h"
 #include "player.h"
 
 // ----------------------------------------------------
@@ -249,15 +250,21 @@ bool Player::UnEquip(const vector<string>& args)
 bool Player::Examine(const vector<string>& args) const
 {
 	Creature *target = (Creature*)parent->Find(args[1], CREATURE);
+	Npc *npc = (Npc*)parent->Find(args[1], NPC);
 
-	if(target == NULL)
+	if (target == NULL && npc == NULL)
 	{
 		cout << "\n" << args[1] << " is not here.\n";
 		return false;
 	}
-
-	target->Inventory();
-	target->Stats();
+	else if (npc == NULL)
+	{
+		target->Inventory();
+		target->Stats();
+		return true;
+	}
+	npc->Inventory();
+	npc->Stats();
 
 	return true;
 }
@@ -433,5 +440,19 @@ bool Player::Use(const vector<string>& args)
 		}
 	}
 	cout << "\nYou consume item " << item->name << ".\n";
+	return true;
+}
+
+bool Player::talk(const vector<string>& args)
+{
+	Npc *target = (Npc*)parent->Find(args[1], NPC);
+
+	if (target == NULL)
+	{
+		cout << "\nYou can't talk to this creature.\n";
+		return false;
+	}
+	else
+		cout << "\n" << target->dialog;
 	return true;
 }

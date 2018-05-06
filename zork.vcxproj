@@ -83,6 +83,7 @@
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NPC.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="room.cpp" />
     <ClCompile Include="world.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="exit.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="NPC.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="room.h" />
     <ClInclude Include="world.h" />
