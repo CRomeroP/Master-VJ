@@ -8,7 +8,7 @@
 
 
 
-Npc::Npc(const char* title, const char* description,NPCType clas, Room* room, const char* dialog) :
+Npc::Npc(const char* title, const char* description,NPCType clas, Room* room) :
 	Creature(title, description, room)
 {
 	type = NPC;
@@ -34,7 +34,8 @@ void Npc::Inventory() const
 	cout << "\nItems for sell: ";
 	for (list<Entity*>::const_iterator it = items.begin(); it != items.cend(); ++it)
 	{
-		cout << "\n" << (*it)->name << " " << (*it)->cost << " gold";
+		if(!Same((*it)->name, "sword"))
+			cout << "\n" << (*it)->name << " " << (*it)->cost << " gold";
 	}
 	cout << "\n";
 }

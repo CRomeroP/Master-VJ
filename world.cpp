@@ -16,7 +16,7 @@ World::World()
 
 	// Rooms ----
 	Room* forest = new Room("Forest", "You are surrounded by tall trees. It feels like a huge forest someone could get lost easily.");
-	Room* centrance = new Room("Castle entrance", "You are inside a beautiful but small white house.");
+	Room* centrance = new Room("Castle_entrance", "You are inside a beautiful but small white house.");
 	Room* chall = new Room("Basement", "The basement features old furniture and dim light.");
 	Room* cave = new Room("Cave", "You are inside a dark cave");
 	Room* lwing = new Room("Castle left wing", "left");
@@ -31,7 +31,7 @@ World::World()
 	Exit* ex6 = new Exit("east", "west", "wooden door", chall, rwing);
 	Exit* ex7 = new Exit("south", "north", "Double doors", chall, throne);
 	ex4->locked = true;
-	ex5->locked = true;
+	//ex5->locked = true;
 
 	entities.push_back(forest);
 	entities.push_back(centrance);
@@ -62,19 +62,21 @@ World::World()
 	entities.push_back(bat);
 
 	//NPCs
-	Npc* merchant = new Npc("Merchant", "A wandering merchant in search of fortune", MERCHANT, centrance, "Do you wanna buy something?");
+	Npc* merchant = new Npc("Merchant", "A wandering merchant in search of fortune", MERCHANT, centrance);
+	merchant->dialog = "Do you wanna buy something?";
 	entities.push_back(merchant);
 
 
 	// Items -----
 	//Item* mailbox = new Item("Mailbox", "Looks like it might contain something.", house);
 	Item* key = new Item("Key", "Old iron key.", merchant);
-	ex2->key = key;
+	ex4->key = key;
 	key->cost = 3;
 
-	Item* sword = new Item("Sword", "A simple old and rusty sword.", forest, WEAPON);
+	Item* sword = new Item("Sword", "A simple old and rusty sword.", merchant, WEAPON);
 	sword->min_value = 2;
 	sword->max_value = 6;
+	sword->cost = 4;
 
 	Item* sword2(sword);
 	//sword2->parent = butler;

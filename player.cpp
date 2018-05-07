@@ -263,7 +263,6 @@ bool Player::Examine(const vector<string>& args) const
 		target->Stats();
 		return true;
 	}
-	npc->Inventory();
 	npc->Stats();
 
 	return true;
@@ -445,7 +444,7 @@ bool Player::Use(const vector<string>& args)
 
 bool Player::Talk(const vector<string>& args)
 {
-	Npc *target = (Npc*)parent->Find(args[1], NPC);
+	Creature *target = (Creature*)parent->Find(args[1], NPC);
 
 	if (target == NULL)
 	{
@@ -453,7 +452,29 @@ bool Player::Talk(const vector<string>& args)
 		return false;
 	}
 	else
-		cout << "\n" << target->dialog;
+	{
+		if (Same(target->name,"Merchant")) 
+		{
+			list<Entity*> items;
+			target->FindAll(ITEM, items);
+
+			if (items.size() > 0)
+			{
+				for (list<Entity*>::const_iterator it = items.begin(); it != items.cend(); ++it)
+				{
+					Item* i = (Item*)(*it);
+					if (Same("sword", i->name))
+					{
+						cout << "\nI see you are lost here, take this\n";
+						i->ChangeParentTo(this);
+						cout << "\nSword is added to your inventory!\n";
+					}
+				}
+			}
+		}
+		cout << "\n" << target->dialog << "\n";
+		if (Same(target->name, "Merchant")) target->Inventory();
+	}
 	return true;
 }
 
@@ -467,12 +488,7 @@ bool Player::Buy(const vector<string>& args)
 		return false;
 	}
 
-	else if (target->clas == MERCHANT)
-	{
-		cout << "\nNPC " << target->name << " is not a merchant";
-		return false;
-	}
-	else
+	else if (Same(target->name,"Merchant"))
 	{
 		list<Entity*> items;
 		target->FindAll(ITEM, items);
@@ -490,6 +506,11 @@ bool Player::Buy(const vector<string>& args)
 				}
 			}
 		}
+	}
+	else
+	{
+		cout << "\nNPC " << target->name << " is not a merchant";
+		return false;
 	}
 	return true;
 }
