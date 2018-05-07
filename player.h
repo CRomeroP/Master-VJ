@@ -25,7 +25,8 @@ public:
 	bool UnLock(const vector<string>& args);
 	//New Player options
 	bool Use(const vector<string>& args);
-	bool talk(const vector<string>& args);
+	bool Talk(const vector<string>& args);
+	bool Buy(const vector<string>& args);
 
 public :
 

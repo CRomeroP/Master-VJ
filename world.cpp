@@ -70,6 +70,7 @@ World::World()
 	//Item* mailbox = new Item("Mailbox", "Looks like it might contain something.", house);
 	Item* key = new Item("Key", "Old iron key.", merchant);
 	ex2->key = key;
+	key->cost = 3;
 
 	Item* sword = new Item("Sword", "A simple old and rusty sword.", forest, WEAPON);
 	sword->min_value = 2;
@@ -96,6 +97,7 @@ World::World()
 	// Player ----
 	player = new Player("Hero", "You are an awesome adventurer!", centrance);
 	player->hit_points = 25;
+	player->gold = 4;
 	entities.push_back(player);
 }
 
@@ -234,7 +236,7 @@ bool World::ParseCommand(vector<string>& args)
 			}
 			else if (Same(args[0], "talk") || Same(args[0], "t"))
 			{
-				player->talk(args);
+				player->Talk(args);
 			}
 			else
 				ret = false;
@@ -242,6 +244,10 @@ bool World::ParseCommand(vector<string>& args)
 		}
 		case 3: // commands with two arguments ------------------------------
 		{
+			if (Same(args[0], "buy") || Same(args[0], "b"))
+			{
+			player->Buy(args);
+			}
 			break;
 		}
 		case 4: // commands with three arguments ------------------------------

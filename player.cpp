@@ -443,7 +443,7 @@ bool Player::Use(const vector<string>& args)
 	return true;
 }
 
-bool Player::talk(const vector<string>& args)
+bool Player::Talk(const vector<string>& args)
 {
 	Npc *target = (Npc*)parent->Find(args[1], NPC);
 
@@ -454,5 +454,42 @@ bool Player::talk(const vector<string>& args)
 	}
 	else
 		cout << "\n" << target->dialog;
+	return true;
+}
+
+bool Player::Buy(const vector<string>& args)
+{
+	Npc *target = (Npc*)parent->Find(args[1], NPC);
+
+	if (target == NULL)
+	{
+		cout << "\nNPC " << target->name << " is not in this room\n";
+		return false;
+	}
+
+	else if (target->clas == MERCHANT)
+	{
+		cout << "\nNPC " << target->name << " is not a merchant";
+		return false;
+	}
+	else
+	{
+		list<Entity*> items;
+		target->FindAll(ITEM, items);
+
+		if (items.size() > 0)
+		{
+			for (list<Entity*>::const_iterator it = items.begin(); it != items.cend(); ++it)
+			{
+				Item* i = (Item*)(*it);
+				if (Same(args[2], i->name))
+				{
+					i->ChangeParentTo(this);
+					gold -= i->cost;
+					cout << "\nYou buy " << i->name << " from " << target->name << " for " << i->cost << " gold!\n";
+				}
+			}
+		}
+	}
 	return true;
 }
