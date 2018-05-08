@@ -34,7 +34,6 @@ void Npc::Inventory() const
 	cout << "\nItems for sell: ";
 	for (list<Entity*>::const_iterator it = items.begin(); it != items.cend(); ++it)
 	{
-		if(!Same((*it)->name, "sword"))
 			cout << "\n" << (*it)->name << " " << (*it)->cost << " gold";
 	}
 	cout << "\n";

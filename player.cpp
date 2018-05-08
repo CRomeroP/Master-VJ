@@ -465,9 +465,9 @@ bool Player::Talk(const vector<string>& args)
 					Item* i = (Item*)(*it);
 					if (Same("sword", i->name))
 					{
-						cout << "\nI see you are lost here, take this\n";
+						cout << "\nI see you are lost here, take this";
 						i->ChangeParentTo(this);
-						cout << "\nSword is added to your inventory!\n";
+						cout << "\n(Sword is added to your inventory!)\n";
 					}
 				}
 			}
@@ -500,9 +500,14 @@ bool Player::Buy(const vector<string>& args)
 				Item* i = (Item*)(*it);
 				if (Same(args[2], i->name))
 				{
-					i->ChangeParentTo(this);
-					gold -= i->cost;
-					cout << "\nYou buy " << i->name << " from " << target->name << " for " << i->cost << " gold!\n";
+					if (gold >= i->cost)
+					{
+						i->ChangeParentTo(this);
+						gold -= i->cost;
+						cout << "\nYou buy " << i->name << " from " << target->name << " for " << i->cost << " gold!\n";
+					}
+					else
+						cout << "\nYou don't have enough gold for buy " << i->name << "!\n";
 				}
 			}
 		}

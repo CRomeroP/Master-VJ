@@ -23,13 +23,14 @@ World::World()
 	Room* rwing = new Room("Castle right wing", "right");
 	Room* throne = new Room("Throne room", "Throne");
 
-	Exit* ex1 = new Exit("north", "south", "Little path", centrance, forest, true);
+	Exit* ex1 = new Exit("north", "south", "Little path", centrance, forest);
 	Exit* ex2 = new Exit("east", "north", "Passage", forest, cave);
 	Exit* ex3 = new Exit("west", "east", "Cave entrance", cave, centrance);
 	Exit* ex4 = new Exit("south", "north", "Castle bridge", centrance, chall);
 	Exit* ex5 = new Exit("west", "east", "wooden door", chall, lwing);
 	Exit* ex6 = new Exit("east", "west", "wooden door", chall, rwing);
 	Exit* ex7 = new Exit("south", "north", "Double doors", chall, throne);
+	ex1->locked = true;
 	ex4->locked = true;
 	//ex5->locked = true;
 
@@ -58,20 +59,34 @@ World::World()
 	bat->max_damage = 2;
 	bat->gold = 3;
 
+	Creature* wolf = new Creature("Wolf", "A ferocious wolf that seems hungry", forest);
+	wolf->hit_points = 10;
+	wolf->min_damage = 3;
+	wolf->max_damage = 5;
+	wolf->gold = 6;
+
+
 	//entities.push_back(butler);
 	entities.push_back(bat);
+	entities.push_back(wolf);
 
 	//NPCs
 	Npc* merchant = new Npc("Merchant", "A wandering merchant in search of fortune", MERCHANT, centrance);
 	merchant->dialog = "Do you wanna buy something?";
 	entities.push_back(merchant);
+	merchant->min_damage = 500;
+	merchant->max_damage = 999;
+	merchant->hit_points = 75;
 
 
 	// Items -----
 	//Item* mailbox = new Item("Mailbox", "Looks like it might contain something.", house);
-	Item* key = new Item("Key", "Old iron key.", merchant);
-	ex4->key = key;
-	key->cost = 3;
+	Item* forest_key = new Item("ForestKey", "Old iron key.", merchant);
+	ex1->key = forest_key;
+	forest_key->cost = 3;
+
+	Item* castle_key = new Item("CastleKey", "Rusty key. Seems to open a big door", wolf);
+	ex4->key = castle_key;
 
 	Item* sword = new Item("Sword", "A simple old and rusty sword.", merchant, WEAPON);
 	sword->min_value = 2;
@@ -93,13 +108,12 @@ World::World()
 	//entities.push_back(mailbox);
 	entities.push_back(sword);
 	//entities.push_back(shield);
-	entities.push_back(key);
+	entities.push_back(forest_key);
 	entities.push_back(shpotion);
 
 	// Player ----
 	player = new Player("Hero", "You are an awesome adventurer!", centrance);
 	player->hit_points = 25;
-	player->gold = 4;
 	entities.push_back(player);
 }
 
