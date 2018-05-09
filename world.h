@@ -12,6 +12,8 @@ using namespace std;
 
 class Entity;
 class Player;
+class Room;
+class Exit;
 
 class World
 {
@@ -31,6 +33,7 @@ private:
 	list<Entity*> entities;
 	Player* player;
 	Room* SRoom;
+	Exit* open;
 };
 
 #endif //__World__

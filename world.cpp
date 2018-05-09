@@ -30,8 +30,8 @@ World::World()
 	Exit* ex5 = new Exit("west", "east", "wooden door", chall, wwing);
 	Exit* ex6 = new Exit("east", "west", "wooden door", chall, ewing);
 	Exit* ex7 = new Exit("south", "north", "Double doors", chall, throne);
-	ex1->locked = true;
-	ex4->locked = true;
+	//ex1->locked = true;
+	//ex4->locked = true;
 	ex7->locked = true;
 
 	entities.push_back(forest);
@@ -51,6 +51,8 @@ World::World()
 	entities.push_back(ex5);
 	entities.push_back(ex6);
 	entities.push_back(ex7);
+
+	open = ex7;
 
 	// Creatures ----
 	//Creature* butler = new Creature("Butler", "It's James, the house Butler.", house);
@@ -102,6 +104,8 @@ World::World()
 	sword->min_value = 2;
 	sword->max_value = 6;
 	sword->cost = 4;
+
+	Item* staue = new Item("Statue", "A statue representing a legendary hero. Seems like something is missing in his hand", ewing);
 
 	//Item* sword2(sword);
 	//sword2->parent = butler;
@@ -263,6 +267,7 @@ bool World::ParseCommand(vector<string>& args)
 			else if (Same(args[0], "talk") || Same(args[0], "t"))
 			{
 				player->Talk(args);
+				if (Same(args[1], "WiseMan")) CreateNewRoom();
 			}
 			else
 				ret = false;
@@ -293,6 +298,11 @@ bool World::ParseCommand(vector<string>& args)
 			else if(Same(args[0], "drop") || Same(args[0], "put"))
 			{
 				player->Drop(args);
+				if (Same(args[1], "OrnamentalSword") && Same(args[3], "statue"))
+				{
+					open->locked = false;
+					cout << "\nThe exit to throne room is now open!\n";
+				}
 			}
 			else
 				ret = false;
