@@ -30,8 +30,8 @@ World::World()
 	Exit* ex5 = new Exit("west", "east", "wooden door", chall, wwing);
 	Exit* ex6 = new Exit("east", "west", "wooden door", chall, ewing);
 	Exit* ex7 = new Exit("south", "north", "Double doors", chall, throne);
-	//ex1->locked = true;
-	//ex4->locked = true;
+	ex1->locked = true;
+	ex4->locked = true;
 	ex7->locked = true;
 
 	entities.push_back(forest);
@@ -69,10 +69,16 @@ World::World()
 	wolf->max_damage = 5;
 	wolf->gold = 6;
 
+	Creature* armor = new Creature("LivingArmor", "Living armor", wwing);
+	armor->hit_points = 10;
+
+	Creature* king = new Creature("King", "The King", throne);
+	king->hit_points = 30;
 
 	//entities.push_back(butler);
 	entities.push_back(bat);
 	entities.push_back(wolf);
+	entities.push_back(king);
 
 	//NPCs
 	Npc* merchant = new Npc("Merchant", "A wandering merchant in search of fortune", MERCHANT, centrance);
@@ -93,6 +99,8 @@ World::World()
 
 	// Items -----
 	//Item* mailbox = new Item("Mailbox", "Looks like it might contain something.", house);
+	Item* statue = new Item("Statue", "A statue representing a legendary hero. Seems like something is missing in his hand", ewing);
+
 	Item* forest_key = new Item("ForestKey", "Old iron key.", merchant);
 	ex1->key = forest_key;
 	forest_key->cost = 3;
@@ -105,25 +113,49 @@ World::World()
 	sword->max_value = 6;
 	sword->cost = 4;
 
-	Item* staue = new Item("Statue", "A statue representing a legendary hero. Seems like something is missing in his hand", ewing);
+	Item* shield = new Item("SmallShield", "Small shield", merchant);
+	shield->min_value = 1;
+	shield->max_value = 2;
+	shield->cost = 4;
 
-	//Item* sword2(sword);
-	//sword2->parent = butler;
+	Item* longSword = new Item("LongSword", "Long Sword", armor);
+	longSword->min_value = 3;
+	longSword->max_value = 7;
 
-	//Item* shield = new Item("Shield", "An old wooden shield.", butler, ARMOUR);
-	//shield->min_value = 1;
-	//shield->max_value = 3;
-	//butler->AutoEquip();
+	Item* ironShield = new Item("IronShield","Iron shield", armor);
+	ironShield->min_value = 2;
+	ironShield->max_value = 3;
 
-	Item* shpotion = new Item("Small_heal_potion", "Potion that heals 2 hit points", bat, HEAL);
+	Item* kingShield = new Item("King Shield", "", king);
+	kingShield->min_value = 3;
+	kingShield->max_value = 4;
+	
+	Item* kingSword = new Item("King Sword","",king);
+	kingSword->min_value = 5;
+	kingSword->max_value = 8;
+	kingSword->parent = king;
+
+	armor->AutoEquip();
+	king->AutoEquip();
+
+	Item* shpotion = new Item("SmallHealPotion", "Potion that heals 2 hit points", bat, HEAL);
 	shpotion->max_value = 2;
-	shpotion->parent = bat;
 
-	//entities.push_back(mailbox);
-	entities.push_back(sword);
-	//entities.push_back(shield);
+	Item* mpotion = new Item("MediumHealPotion", "Potion that heals 6 hit points", merchant, HEAL);
+	mpotion->max_value = 6;
+
+
+	entities.push_back(statue);
 	entities.push_back(forest_key);
+	entities.push_back(castle_key);
+	entities.push_back(sword);
+	entities.push_back(shield);
+	entities.push_back(longSword);
+	entities.push_back(ironShield);
+	entities.push_back(kingShield);
+	entities.push_back(kingSword);
 	entities.push_back(shpotion);
+	entities.push_back(mpotion);
 
 	// Player ----
 	player = new Player("Hero", "You are an awesome adventurer!", centrance);
@@ -318,12 +350,24 @@ bool World::ParseCommand(vector<string>& args)
 void World::CreateNewRoom()
 {
 	Room* tree = new Room("Tree", "Tree");
+
 	entities.push_back(tree);
 
 	Exit* ex8 = new Exit("up", "down", "Climb tree", SRoom, tree);
+
 	entities.push_back(ex8);
 
-	Item * chest = new Item("Chest", "Looks like it might contain something.", tree);
-	Item * ornamental = new Item("OrnamentalSword", "Ornamental", chest);
+	Creature* bird = new Creature("Bird", "a bird", tree);
+	bird->hit_points = 16;
+	bird->min_damage = 3;
+	bird->max_damage = 5;
+
+	entities.push_back(bird);
+
+	Item* chest = new Item("Chest", "Looks like it might contain something.", tree);
+	Item* ornamental = new Item("OrnamentalSword", "Ornamental", chest);
+
+	entities.push_back(chest);
+	entities.push_back(ornamental);
 
 }

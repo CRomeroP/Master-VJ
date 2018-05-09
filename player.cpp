@@ -272,16 +272,25 @@ bool Player::Examine(const vector<string>& args) const
 bool Player::Attack(const vector<string>& args)
 {
 	Creature *target = (Creature*)parent->Find(args[1], CREATURE);
+	Npc *target2 = (Npc*)parent->Find(args[1], NPC);
 
-	if(target == NULL)
+	if(target == NULL && target2 == NULL)
 	{
 		cout << "\n" << args[1] << " is not here.";
 		return false;
 	}
-
-	combat_target = target;
-	cout << "\nYou jump to attack " << target->name << "!\n";
-	return true;
+	if (target2 == NULL)
+	{
+		combat_target = target;
+		cout << "\nYou jump to attack " << target->name << "!\n";
+		return true;
+	}
+	else
+	{
+		combat_target = target2;
+		cout << "\nYou jump to attack " << target2->name << "!\n";
+		return true;
+	}
 }
 
 // ----------------------------------------------------
