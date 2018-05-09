@@ -16,31 +16,33 @@ World::World()
 
 	// Rooms ----
 	Room* forest = new Room("Forest", "You are surrounded by tall trees. It feels like a huge forest someone could get lost easily.");
-	Room* centrance = new Room("Castle_entrance", "You are inside a beautiful but small white house.");
+	Room* centrance = new Room("CastleEntrance", "You are inside a beautiful but small white house.");
 	Room* chall = new Room("Basement", "The basement features old furniture and dim light.");
 	Room* cave = new Room("Cave", "You are inside a dark cave");
-	Room* lwing = new Room("Castle left wing", "left");
-	Room* rwing = new Room("Castle right wing", "right");
-	Room* throne = new Room("Throne room", "Throne");
+	Room* ewing = new Room("CastleEastWing", "left");
+	Room* wwing = new Room("CastleWestWing", "right");
+	Room* throne = new Room("ThroneRoom", "Throne");
 
 	Exit* ex1 = new Exit("north", "south", "Little path", centrance, forest);
 	Exit* ex2 = new Exit("east", "north", "Passage", forest, cave);
 	Exit* ex3 = new Exit("west", "east", "Cave entrance", cave, centrance);
 	Exit* ex4 = new Exit("south", "north", "Castle bridge", centrance, chall);
-	Exit* ex5 = new Exit("west", "east", "wooden door", chall, lwing);
-	Exit* ex6 = new Exit("east", "west", "wooden door", chall, rwing);
+	Exit* ex5 = new Exit("west", "east", "wooden door", chall, wwing);
+	Exit* ex6 = new Exit("east", "west", "wooden door", chall, ewing);
 	Exit* ex7 = new Exit("south", "north", "Double doors", chall, throne);
 	ex1->locked = true;
 	ex4->locked = true;
-	//ex5->locked = true;
+	ex7->locked = true;
 
 	entities.push_back(forest);
 	entities.push_back(centrance);
 	entities.push_back(chall);
 	entities.push_back(cave);
-	entities.push_back(lwing);
-	entities.push_back(rwing);
+	entities.push_back(ewing);
+	entities.push_back(wwing);
 	entities.push_back(throne);
+
+	SRoom = forest;
 
 	entities.push_back(ex1);
 	entities.push_back(ex2);
@@ -73,10 +75,18 @@ World::World()
 	//NPCs
 	Npc* merchant = new Npc("Merchant", "A wandering merchant in search of fortune", MERCHANT, centrance);
 	merchant->dialog = "Do you wanna buy something?";
-	entities.push_back(merchant);
 	merchant->min_damage = 500;
 	merchant->max_damage = 999;
 	merchant->hit_points = 75;
+	entities.push_back(merchant);
+	
+
+	Npc* man = new Npc("WiseMan", "An old man who knows some secrets about this place", CITIZEN, wwing);
+	man->dialog = "You want to open the throne room? I hear something about an ornamental sword lost in the forest. Maybe if someone find it and put it in the statue in the other room...";
+	man->hit_points = 100;
+	man->min_damage = 10;
+	man->max_damage = 15;
+	entities.push_back(man);
 
 
 	// Items -----
@@ -93,7 +103,7 @@ World::World()
 	sword->max_value = 6;
 	sword->cost = 4;
 
-	Item* sword2(sword);
+	//Item* sword2(sword);
 	//sword2->parent = butler;
 
 	//Item* shield = new Item("Shield", "An old wooden shield.", butler, ARMOUR);
@@ -293,4 +303,17 @@ bool World::ParseCommand(vector<string>& args)
 	}
 
 	return ret;
+}
+
+void World::CreateNewRoom()
+{
+	Room* tree = new Room("Tree", "Tree");
+	entities.push_back(tree);
+
+	Exit* ex8 = new Exit("up", "down", "Climb tree", SRoom, tree);
+	entities.push_back(ex8);
+
+	Item * chest = new Item("Chest", "Looks like it might contain something.", tree);
+	Item * ornamental = new Item("OrnamentalSword", "Ornamental", chest);
+
 }
