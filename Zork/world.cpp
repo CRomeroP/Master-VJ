@@ -15,14 +15,20 @@ World::World()
 	tick_timer = clock();
 
 	// Rooms ----
+	// Outside rooms
 	Room* forest = new Room("Forest", "You are surrounded by tall trees. It feels like a huge forest someone could get lost easily.");
-	Room* centrance = new Room("CastleEntrance", "You are inside a beautiful but small white house.");
-	Room* chall = new Room("Basement", "The basement features old furniture and dim light.");
+	Room* centrance = new Room("CastleEntrance", "You are in the entrance of the castle.");
 	Room* cave = new Room("Cave", "You are inside a dark cave");
-	Room* ewing = new Room("CastleEastWing", "left");
-	Room* wwing = new Room("CastleWestWing", "right");
-	Room* throne = new Room("ThroneRoom", "Throne");
+	// Inside rooms
+	Room* chall = new Room("CastleHall", "You are in the main room of the castle, a huge and illuminated hall.");
+	Room* ewing = new Room("CastleEastWing", "Small room used to wait for an audience");
+	Room* wwing = new Room("CastleWestWing", "Room plenty of arworks. One statue seems suspicious");
+	Room* throne = new Room("ThroneRoom", "You see the king sit in his throne, in a large and dark room");
 
+	// "Secret" room is not created yet
+	newRoom = false;
+
+	// Exits
 	Exit* ex1 = new Exit("north", "south", "Little path", centrance, forest);
 	Exit* ex2 = new Exit("east", "north", "Passage", forest, cave,true);
 	Exit* ex3 = new Exit("west", "east", "Cave entrance", cave, centrance);
@@ -34,6 +40,7 @@ World::World()
 	ex4->locked = true;
 	ex7->locked = true;
 
+	// Rooms and exits push
 	entities.push_back(forest);
 	entities.push_back(centrance);
 	entities.push_back(chall);
@@ -42,6 +49,7 @@ World::World()
 	entities.push_back(wwing);
 	entities.push_back(throne);
 
+	// Save forest to use it as exit of "secret" room (tree)
 	SRoom = forest;
 
 	entities.push_back(ex1);
@@ -52,11 +60,10 @@ World::World()
 	entities.push_back(ex6);
 	entities.push_back(ex7);
 
+	// Exit to open with statue
 	open = ex7;
 
 	// Creatures ----
-	//Creature* butler = new Creature("Butler", "It's James, the house Butler.", house);
-	//butler->hit_points = 10;
 	Creature* bat = new Creature("Bat", "An annoying bat", cave);
 	bat->hit_points = 5;
 	bat->min_damage = 1;
@@ -69,16 +76,17 @@ World::World()
 	wolf->max_damage = 5;
 	wolf->gold = 6;
 
-	Creature* armor = new Creature("LivingArmor", "Living armor", wwing);
+	Creature* armor = new Creature("LivingArmor", "Living armor who protect the caste", ewing);
 	armor->hit_points = 10;
 	armor->gold = 10;
 
-	Creature* king = new Creature("King", "The King", throne);
+	Creature* king = new Creature("King", "The King, the ruler of the kingdom. He is a strong opponent", throne);
 	king->hit_points = 15;
 
+	// King as the enemy who must kill to succesfully end the game.
 	end = king;
 
-	//entities.push_back(butler);
+	// Creatures push
 	entities.push_back(bat);
 	entities.push_back(wolf);
 	entities.push_back(armor);
@@ -94,7 +102,7 @@ World::World()
 	
 
 	Npc* man = new Npc("WiseMan", "An old man who knows some secrets about this place", CITIZEN, wwing);
-	man->dialog = "You want to open the throne room? I hear something about an ornamental sword lost in the forest. Maybe if someone find it and put it in the statue in the other room...";
+	man->dialog = "You want to open the throne room? I hear something about an ornamental sword lost in the forest.\nMaybe if someone find it and put it in the statue in the other room...";
 	man->hit_points = 100;
 	man->min_damage = 10;
 	man->max_damage = 15;
@@ -102,9 +110,10 @@ World::World()
 
 
 	// Items -----
-	//Item* mailbox = new Item("Mailbox", "Looks like it might contain something.", house);
+	// Items tools
 	Item* statue = new Item("Statue", "A statue representing a legendary hero. Seems like something is missing in his hand", ewing, TOOL);
 
+	// Items keys
 	Item* forest_key = new Item("ForestKey", "Old iron key.", merchant, COMMON);
 	ex1->key = forest_key;
 	forest_key->cost = 3;
@@ -112,21 +121,22 @@ World::World()
 	Item* castle_key = new Item("CastleKey", "Rusty key. Seems to open a big door", wolf, COMMON);
 	ex4->key = castle_key;
 
-	Item* sword = new Item("Sword", "A simple old and rusty sword.", merchant, WEAPON);
+	// Items Equipment 
+	Item* sword = new Item("Sword", "A small and old sword.", merchant, WEAPON);
 	sword->min_value = 2;
 	sword->max_value = 6;
 	sword->cost = 4;
 
-	Item* shield = new Item("SmallShield", "Small shield", merchant, ARMOUR);
+	Item* shield = new Item("SmallShield", "Weak shield, but still usefull", merchant, ARMOUR);
 	shield->min_value = 1;
 	shield->max_value = 2;
 	shield->cost = 6;
 
-	Item* longSword = new Item("LongSword", "Long Sword",armor, WEAPON);
+	Item* longSword = new Item("LongSword", "Sword from the soldiers of the castle",armor, WEAPON);
 	longSword->min_value = 3;
 	longSword->max_value = 7;
 
-	Item* ironShield = new Item("IronShield","Iron shield",armor, ARMOUR);
+	Item* ironShield = new Item("IronShield","Heavy shield used by the castle soldiers",armor, ARMOUR);
 	ironShield->min_value = 2;
 	ironShield->max_value = 3;
 
@@ -138,17 +148,19 @@ World::World()
 	kingSword->min_value = 5;
 	kingSword->max_value = 8;
 
+	// Equip enemies
 	armor->AutoEquip();
 	king->AutoEquip();
 
-	Item* shpotion = new Item("SmallHealPotion", "Potion that heals 2 hit points", bat, HEAL);
+	// Usable items
+	Item* shpotion = new Item("SmallHealPotion", "Potion that heals 9 hit points", bat, HEAL);
 	shpotion->max_value = 9;
 
-	Item* mpotion = new Item("MediumHealPotion", "Potion that heals 6 hit points", merchant, HEAL);
+	Item* mpotion = new Item("MediumHealPotion", "Potion that heals 20 hit points", merchant, HEAL);
 	mpotion->max_value = 20;
 	mpotion->cost = 15;
 
-
+	// Items push
 	entities.push_back(statue);
 	entities.push_back(forest_key);
 	entities.push_back(castle_key);
@@ -162,7 +174,7 @@ World::World()
 	entities.push_back(mpotion);
 
 	// Player ----
-	player = new Player("Hero", "You are an awesome adventurer!", centrance);
+	player = new Player("Hero", "An exsoldier of the king looking for revenge", centrance);
 	player->hit_points = player ->max_hp = 40;
 	entities.push_back(player);
 }
@@ -302,8 +314,9 @@ bool World::ParseCommand(vector<string>& args)
 			}
 			else if (Same(args[0], "talk") || Same(args[0], "t"))
 			{
-				player->Talk(args);
-				if (Same(args[1], "WiseMan")) CreateNewRoom();
+				aux = player->Talk(args);
+				// Create room after talking for first time with Wise Man npc
+				if (Same(args[1], "WiseMan") && !newRoom && aux) CreateNewRoom();
 			}
 			else
 				ret = false;
@@ -333,8 +346,9 @@ bool World::ParseCommand(vector<string>& args)
 			}
 			else if(Same(args[0], "drop") || Same(args[0], "put"))
 			{
-				player->Drop(args);
-				if (Same(args[1], "OrnamentalSword") && Same(args[3], "statue"))
+				aux = player->Drop(args);
+				//Open trhone room when use ornamental sword in statue
+				if (Same(args[1], "OrnamentalSword") && Same(args[3], "statue") && aux)
 				{
 					open->locked = false;
 					cout << "\nThe exit to throne room is now open!\n";
@@ -351,16 +365,20 @@ bool World::ParseCommand(vector<string>& args)
 	return ret;
 }
 
+// Function to create a room after an event occurs
 void World::CreateNewRoom()
 {
+	// Room
 	Room* tree = new Room("Tree", "Tree");
 
 	entities.push_back(tree);
 
+	// Exit
 	Exit* ex8 = new Exit("up", "down", "Climb tree", SRoom, tree);
 
 	entities.push_back(ex8);
 
+	// Creature
 	Creature* bird = new Creature("Bird", "a bird", tree);
 	bird->hit_points = 13;
 	bird->min_damage = 3;
@@ -369,15 +387,22 @@ void World::CreateNewRoom()
 
 	entities.push_back(bird);
 
-	Item* chest = new Item("Chest", "Looks like it might contain something.", tree);
+	// Items
+	Item* chest = new Item("Chest", "Looks like it might contain something.", tree, TOOL);
 	Item* ornamental = new Item("OrnamentalSword", "Ornamental", chest);
 
 	entities.push_back(chest);
 	entities.push_back(ornamental);
 
+	// Mark room as created to avoid duplications
+	newRoom = true;
+
 }
 
-bool World::GameEnd()
+// Returns when king dies to end the game
+int World::GameEnd()
 {
-	return end->hit_points <= 0;
+	if (!end->IsAlive()) return 1;
+	if (!player->IsAlive()) return 2;
+	return 0;
 }

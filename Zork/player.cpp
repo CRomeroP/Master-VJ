@@ -108,12 +108,15 @@ bool Player::Take(const vector<string>& args)
 			return false;
 		}
 		
-		else if (Same(item->name, "statue"))
+		switch (item->item_type)
 		{
+			case TOOL:
 			cout << "\nYou cant take this item\n";
 			return false;
-		}
 
+			default:
+			break;
+		}
 		cout << "\nYou take " << item->name << ".\n";
 		item->ChangeParentTo(this);
 	}
@@ -256,6 +259,7 @@ bool Player::UnEquip(const vector<string>& args)
 bool Player::Examine(const vector<string>& args) const
 {
 	Creature *target = (Creature*)parent->Find(args[1], CREATURE);
+	// Npc could be examined
 	Npc *npc = (Npc*)parent->Find(args[1], NPC);
 
 	if (target == NULL && npc == NULL)
@@ -424,6 +428,7 @@ bool Player::UnLock(const vector<string>& args)
 	return true;
 }
 
+// Function to use objects
 bool Player::Use(const vector<string>& args)
 {
 	Item* item = (Item*)Find(args[1], ITEM);
@@ -436,6 +441,7 @@ bool Player::Use(const vector<string>& args)
 
 	switch (item->item_type)
 	{
+		//Use heal objects
 		case HEAL:
 		if (hit_points == max_hp)
 		{
@@ -445,6 +451,7 @@ bool Player::Use(const vector<string>& args)
 		else
 		{
 			int actual_hp = hit_points;
+			// Just can heal to max_hp
 			hit_points = min(hit_points + item->max_value, max_hp);
 
 			item->ChangeParentTo(NULL);
@@ -457,42 +464,48 @@ bool Player::Use(const vector<string>& args)
 	return true;
 }
 
+// function to talk with npcs
 bool Player::Talk(const vector<string>& args)
 {
-	Creature *target = (Creature*)parent->Find(args[1], NPC);
+	Npc *target = (Npc*)parent->Find(args[1], NPC);
 
 	if (target == NULL)
 	{
-		cout << "\nYou can't talk to this creature.\n";
+		cout << "\n" << args[1] <<" not exist or is not a npc.\n";
 		return false;
 	}
-	else
+	list<Entity*> items;
+	target->FindAll(ITEM, items);
+	switch(target->clas)
 	{
-		if (Same(target->name,"Merchant")) 
+		// If npc is merchant, should give you a sword in first time talk and show inventory
+		case MERCHANT:
+		if (items.size() > 0)
 		{
-			list<Entity*> items;
-			target->FindAll(ITEM, items);
-
-			if (items.size() > 0)
+			for (list<Entity*>::const_iterator it = items.begin(); it != items.cend(); ++it)
 			{
-				for (list<Entity*>::const_iterator it = items.begin(); it != items.cend(); ++it)
+				Item* i = (Item*)(*it);
+				if (Same("sword", i->name))
 				{
-					Item* i = (Item*)(*it);
-					if (Same("sword", i->name))
-					{
-						cout << "\nI see you are lost here, take this";
-						i->ChangeParentTo(this);
-						cout << "\n(Sword is added to your inventory!)\n";
-					}
+					cout << "\nI see you are lost here, take this";
+					i->ChangeParentTo(this);
+					cout << "\n(Sword is added to your inventory!)\n";
 				}
 			}
 		}
 		cout << "\n" << target->dialog << "\n";
-		if (Same(target->name, "Merchant")) target->Inventory();
+		target->Inventory();
+		break;
+
+		// Si el npc no es merchant, solo se muestra el dialogo
+		default:
+		cout << "\n" << target->dialog << "\n";
+		return true;
 	}
 	return true;
 }
 
+// Function to buy from NPCs
 bool Player::Buy(const vector<string>& args)
 {
 	Npc *target = (Npc*)parent->Find(args[1], NPC);
@@ -503,11 +516,13 @@ bool Player::Buy(const vector<string>& args)
 		return false;
 	}
 
-	else if (Same(target->name,"Merchant"))
-	{
-		list<Entity*> items;
-		target->FindAll(ITEM, items);
+	list<Entity*> items;
+	target->FindAll(ITEM, items);
 
+	switch(target->clas)
+	{
+		// NPC should be a merchant
+		case MERCHANT:
 		if (items.size() > 0)
 		{
 			for (list<Entity*>::const_iterator it = items.begin(); it != items.cend(); ++it)
@@ -526,11 +541,12 @@ bool Player::Buy(const vector<string>& args)
 				}
 			}
 		}
-	}
-	else
-	{
-		cout << "\nNPC " << target->name << " is not a merchant";
-		return false;
+		break;
+
+		// If he is not merchant, you cant buy
+		default:
+			cout << "\nNPC " << target->name << " is not a merchant";
+			return false;
 	}
 	return true;
 }

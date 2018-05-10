@@ -27,7 +27,7 @@ public :
 	bool ParseCommand(vector<string>& args);
 	void GameLoop();
 	void CreateNewRoom();
-	bool GameEnd();
+	int GameEnd();
 
 private:
 
@@ -37,6 +37,8 @@ private:
 	Room* SRoom;
 	Exit* open;
 	Creature* end;
+	bool newRoom;
+	bool aux;
 };
 
 #endif //__World__

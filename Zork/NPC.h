@@ -12,7 +12,7 @@ enum NPCType
 class Npc : public Creature
 {
 public:
-	Npc(const char* name, const char* description,NPCType clas, Room* room);
+	Npc(const char* name, const char* description,NPCType clase, Room* room);
 	~Npc();
 
 	void Inventory() const;

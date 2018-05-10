@@ -7,10 +7,6 @@
 
 using namespace std;
 
-#define BACKSPACE "\033[D\033[K"
-
-#define WHITE_ "\033[1;36m"
-#define _WHITE "\033[0m"
 
 // -------------------------------------------------
 int main()
@@ -20,7 +16,7 @@ int main()
 	vector<string> args;
 	args.reserve(10);
 
-	cout << WHITE_ "Welcome to MyZork!\n" _WHITE;
+	cout << "Welcome to KingKiller!\n";
 	cout << "----------------\n";
 
 	World my_world;
@@ -64,14 +60,22 @@ int main()
 			player_input = "";
 			cout << "> ";
 		}
-		if (my_world.GameEnd()) 
+		// When the king is defeated, end the game.
+		if (my_world.GameEnd() == 1) 
 		{
 			cout << "\nYou defeat the king! Congratulations for your achivement!\n You reach the end of the game";
+			break;
+		}
+		// End the game when player dies
+		else if (my_world.GameEnd() == 2)
+		{
+			cout << "\nYou lost the game.\nYou have been defeated and the king stays alive. His reign will last and he will be stronger than anyone";
 			break;
 		}
 
 	}
 
-	cout << "\nThanks for playing, Bye!\n";
+	cout << "\nThanks for playing the game, hope you enjoy it!\n";
+	cin.ignore();
 	return 0;
 }

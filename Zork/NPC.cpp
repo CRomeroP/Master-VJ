@@ -8,10 +8,11 @@
 
 
 
-Npc::Npc(const char* title, const char* description,NPCType clas, Room* room) :
+Npc::Npc(const char* title, const char* description,NPCType clase, Room* room) :
 	Creature(title, description, room)
 {
 	type = NPC;
+	clas = clase;
 }
 
 
@@ -19,6 +20,7 @@ Npc::~Npc()
 {
 }
 
+// Show npc Inventory
 void Npc::Inventory() const
 {
 
@@ -39,6 +41,7 @@ void Npc::Inventory() const
 	cout << "\n";
 }
 
+//Show npc stats
 void Npc::Stats() const
 {
 	cout << "\nStats of this NPC are unknown.\n";

@@ -20,7 +20,7 @@ enum ItemType
 class Item : public Entity
 {
 public:
-	Item(const char* name, const char* description, Entity* parent, ItemType item_type = COMMON);
+	Item(const char* name, const char* description, Entity* parent, ItemType itemType = COMMON);
 	~Item();
 
 	void Look() const;
