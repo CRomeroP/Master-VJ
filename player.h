@@ -29,7 +29,7 @@ public:
 	bool Buy(const vector<string>& args);
 
 public :
-
+	int max_hp;
 };
 
 #endif //__Player__

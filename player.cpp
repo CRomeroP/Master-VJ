@@ -431,7 +431,7 @@ bool Player::Use(const vector<string>& args)
 	switch (item->item_type)
 	{
 		case HEAL:
-		if (hit_points == 25)
+		if (hit_points == max_hp)
 		{
 			cout << "\nYou have max hit points! Cant use this item.\n";
 			return false;
@@ -439,7 +439,7 @@ bool Player::Use(const vector<string>& args)
 		else
 		{
 			int actual_hp = hit_points;
-			hit_points = min(hit_points + item->max_value, 25);
+			hit_points = min(hit_points + item->max_value, max_hp);
 
 			item->ChangeParentTo(NULL);
 			

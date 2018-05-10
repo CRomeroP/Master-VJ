@@ -71,13 +71,15 @@ World::World()
 
 	Creature* armor = new Creature("LivingArmor", "Living armor", wwing);
 	armor->hit_points = 10;
+	armor->gold = 10;
 
 	Creature* king = new Creature("King", "The King", throne);
-	king->hit_points = 30;
+	king->hit_points = 15;
 
 	//entities.push_back(butler);
 	entities.push_back(bat);
 	entities.push_back(wolf);
+	entities.push_back(armor);
 	entities.push_back(king);
 
 	//NPCs
@@ -99,13 +101,13 @@ World::World()
 
 	// Items -----
 	//Item* mailbox = new Item("Mailbox", "Looks like it might contain something.", house);
-	Item* statue = new Item("Statue", "A statue representing a legendary hero. Seems like something is missing in his hand", ewing);
+	Item* statue = new Item("Statue", "A statue representing a legendary hero. Seems like something is missing in his hand", ewing, TOOL);
 
-	Item* forest_key = new Item("ForestKey", "Old iron key.", merchant);
+	Item* forest_key = new Item("ForestKey", "Old iron key.", merchant, COMMON);
 	ex1->key = forest_key;
 	forest_key->cost = 3;
 
-	Item* castle_key = new Item("CastleKey", "Rusty key. Seems to open a big door", wolf);
+	Item* castle_key = new Item("CastleKey", "Rusty key. Seems to open a big door", wolf, COMMON);
 	ex4->key = castle_key;
 
 	Item* sword = new Item("Sword", "A simple old and rusty sword.", merchant, WEAPON);
@@ -113,36 +115,36 @@ World::World()
 	sword->max_value = 6;
 	sword->cost = 4;
 
-	Item* shield = new Item("SmallShield", "Small shield", merchant);
+	Item* shield = new Item("SmallShield", "Small shield", merchant, ARMOUR);
 	shield->min_value = 1;
 	shield->max_value = 2;
-	shield->cost = 4;
+	shield->cost = 6;
 
-	Item* longSword = new Item("LongSword", "Long Sword", armor);
+	Item* longSword = new Item("LongSword", "Long Sword",armor, WEAPON);
 	longSword->min_value = 3;
 	longSword->max_value = 7;
 
-	Item* ironShield = new Item("IronShield","Iron shield", armor);
+	Item* ironShield = new Item("IronShield","Iron shield",armor, ARMOUR);
 	ironShield->min_value = 2;
 	ironShield->max_value = 3;
 
-	Item* kingShield = new Item("King Shield", "", king);
+	Item* kingShield = new Item("King Shield", "", king,ARMOUR);
 	kingShield->min_value = 3;
 	kingShield->max_value = 4;
 	
-	Item* kingSword = new Item("King Sword","",king);
+	Item* kingSword = new Item("King Sword","",king,WEAPON);
 	kingSword->min_value = 5;
 	kingSword->max_value = 8;
-	kingSword->parent = king;
 
 	armor->AutoEquip();
 	king->AutoEquip();
 
 	Item* shpotion = new Item("SmallHealPotion", "Potion that heals 2 hit points", bat, HEAL);
-	shpotion->max_value = 2;
+	shpotion->max_value = 9;
 
 	Item* mpotion = new Item("MediumHealPotion", "Potion that heals 6 hit points", merchant, HEAL);
-	mpotion->max_value = 6;
+	mpotion->max_value = 20;
+	mpotion->cost = 15;
 
 
 	entities.push_back(statue);
@@ -159,7 +161,7 @@ World::World()
 
 	// Player ----
 	player = new Player("Hero", "You are an awesome adventurer!", centrance);
-	player->hit_points = 25;
+	player->hit_points = player ->max_hp = 40;
 	entities.push_back(player);
 }
 
@@ -358,9 +360,10 @@ void World::CreateNewRoom()
 	entities.push_back(ex8);
 
 	Creature* bird = new Creature("Bird", "a bird", tree);
-	bird->hit_points = 16;
+	bird->hit_points = 13;
 	bird->min_damage = 3;
 	bird->max_damage = 5;
+	bird->gold = 12;
 
 	entities.push_back(bird);
 

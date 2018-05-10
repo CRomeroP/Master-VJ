@@ -11,6 +11,7 @@ using namespace std;
 enum ItemType
 {
 	COMMON,
+	TOOL,
 	WEAPON,
 	ARMOUR,
 	HEAL
