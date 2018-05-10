@@ -141,10 +141,10 @@ World::World()
 	armor->AutoEquip();
 	king->AutoEquip();
 
-	Item* shpotion = new Item("SmallHealPotion", "Potion that heals 2 hit points", bat, HEAL);
+	Item* shpotion = new Item("SmallHealPotion", "Potion that heals 9 hit points", bat, HEAL);
 	shpotion->max_value = 9;
 
-	Item* mpotion = new Item("MediumHealPotion", "Potion that heals 6 hit points", merchant, HEAL);
+	Item* mpotion = new Item("MediumHealPotion", "Potion that heals 20 hit points", merchant, HEAL);
 	mpotion->max_value = 20;
 	mpotion->cost = 15;
 
