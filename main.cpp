@@ -64,6 +64,12 @@ int main()
 			player_input = "";
 			cout << "> ";
 		}
+		if (my_world.GameEnd()) 
+		{
+			cout << "\nYou defeat the king! Congratulations for your achivement!\n You reach the end of the game";
+			break;
+		}
+
 	}
 
 	cout << "\nThanks for playing, Bye!\n";

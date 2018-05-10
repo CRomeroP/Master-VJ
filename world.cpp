@@ -24,7 +24,7 @@ World::World()
 	Room* throne = new Room("ThroneRoom", "Throne");
 
 	Exit* ex1 = new Exit("north", "south", "Little path", centrance, forest);
-	Exit* ex2 = new Exit("east", "north", "Passage", forest, cave);
+	Exit* ex2 = new Exit("east", "north", "Passage", forest, cave,true);
 	Exit* ex3 = new Exit("west", "east", "Cave entrance", cave, centrance);
 	Exit* ex4 = new Exit("south", "north", "Castle bridge", centrance, chall);
 	Exit* ex5 = new Exit("west", "east", "wooden door", chall, wwing);
@@ -75,6 +75,8 @@ World::World()
 
 	Creature* king = new Creature("King", "The King", throne);
 	king->hit_points = 15;
+
+	end = king;
 
 	//entities.push_back(butler);
 	entities.push_back(bat);
@@ -373,4 +375,9 @@ void World::CreateNewRoom()
 	entities.push_back(chest);
 	entities.push_back(ornamental);
 
+}
+
+bool World::GameEnd()
+{
+	return end->hit_points <= 0;
 }

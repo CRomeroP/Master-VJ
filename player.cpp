@@ -107,6 +107,12 @@ bool Player::Take(const vector<string>& args)
 			cout << "\nThere is no item here with that name.\n";
 			return false;
 		}
+		
+		else if (Same(item->name, "statue"))
+		{
+			cout << "\nYou cant take this item\n";
+			return false;
+		}
 
 		cout << "\nYou take " << item->name << ".\n";
 		item->ChangeParentTo(this);

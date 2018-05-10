@@ -14,6 +14,7 @@ class Entity;
 class Player;
 class Room;
 class Exit;
+class Creature;
 
 class World
 {
@@ -26,6 +27,7 @@ public :
 	bool ParseCommand(vector<string>& args);
 	void GameLoop();
 	void CreateNewRoom();
+	bool GameEnd();
 
 private:
 
@@ -34,6 +36,7 @@ private:
 	Player* player;
 	Room* SRoom;
 	Exit* open;
+	Creature* end;
 };
 
 #endif //__World__
